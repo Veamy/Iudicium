@@ -134,7 +134,7 @@
 
 ---
 
-## 👤 DEVELOPER 3: Frontend + UX Lead
+## 👤 СКРОМНЕ БОЖЕСТКО 3: Frontend + UX Lead
 
 ### Тиждень 1
 **День 1-2: Setup & Design**
