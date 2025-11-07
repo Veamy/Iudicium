@@ -66,8 +66,8 @@
 
 ### Тиждень 1
 **День 1-2: Infrastructure**
-- [ ] Setup векторної БД (ChromaDB/Milvus/FAISS)
-- [ ] Дизайн схеми даних:
+- [x] Setup векторної БД (ChromaDB/Milvus/FAISS)
+- [x] Дизайн схеми даних:
   ```json
   {
     "candidate_id": "uuid",
@@ -78,7 +78,7 @@
     "embeddings": []
   }
   ```
-- [ ] Імплементація CRUD операцій
+- [x] Імплементація CRUD операцій
 
 **День 3-4: Document Parser Module**
 - [ ] PDF parser (PyPDF2/pdfplumber)
