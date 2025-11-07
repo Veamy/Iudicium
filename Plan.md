@@ -138,13 +138,13 @@
 
 ### Тиждень 1
 **День 1-2: Setup & Design**
-- [ ] Setup React/Vue/Svelte проекту
-- [ ] UI/UX wireframes (Figma/paper)
-- [ ] Дизайн система:
+- [x] Setup React/Vue/Svelte проекту
+- [x] UI/UX wireframes (Figma/paper)
+- [x] Дизайн система:
   - Кольорова палітра (професійна)
   - Typography
   - Component library
-- [ ] Routing structure
+- [x] Routing structure
 
 **День 3-4: Core Pages (Skeleton)**
 - [ ] Landing/Dashboard page
