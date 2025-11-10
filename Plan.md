@@ -81,14 +81,14 @@
 - [x] Імплементація CRUD операцій
 
 **День 3-4: Document Parser Module**
-- [ ] PDF parser (PyPDF2/pdfplumber)
-- [ ] DOCX parser (python-docx)
-- [ ] Structured data extractor:
+- [x] PDF parser (PyPDF2/pdfplumber)
+- [x] DOCX parser (python-docx)
+- [x] Structured data extractor:
   - Dates extraction
   - Job titles/positions
   - Organizations
   - Education records
-- [ ] Resume parser (entity recognition)
+- [x] Resume parser (entity recognition)
 
 **День 5-6: Embeddings Pipeline**
 - [ ] Використання Gemma 3 для embeddings
