@@ -1,3 +1,13 @@
 {
-  "welcome": "Welcome to the app!"
+  "HomePage": {
+    "hz": "Iudicium — assessment that sees deeper.",
+    "guide-button-text": "Iudicium User Guide",
+    "analyze-button-text": "Analyze Resume",
+    "mini-descrioption": "Iudicium — a resume analysis tool that examines open sources to provide in-depth candidate assessment.",
+    "about-teame": "The Basement Dwellers team that worked from the basement"
+  },
+
+  "UploadInfoPage" :{
+    "upload-file-button-text" : "upload file"
+  }
 }

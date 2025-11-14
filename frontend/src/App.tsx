@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <CustomNavbar/>
-      <main style={{ minHeight: 'calc(100vh - 70px)' }}>
+      <main style={{ minHeight: 'calc(100vh - 70px)', width: '100%'}}>
         <AppRoutes />
       </main>
     </>
