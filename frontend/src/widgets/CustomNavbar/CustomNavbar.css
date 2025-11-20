@@ -7,13 +7,14 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   font-family: inherit;
+  flex-shrink: 0; 
+  height: var(--navbar-height);
 }
 
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
-  height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

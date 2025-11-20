@@ -8,5 +8,42 @@
   },
    "UploadInfoPage" :{
     "upload-file-button-text" : "Завантажити файли"
+  },
+  "ProfileComponent" : {
+    "no-profile": "Профілів немає. Створіть новий профіль, щоб побачити його тут.",
+    "loading-error": "Не вдалося завантажити профілі.",
+    "new-profile-button-text": "Новий профіль"
+  },
+  "NewPositionCreateView": {
+    "title": "Створення нової позиції",
+    "basicInfo": "Основна інформація",
+    "positionName": "Назва позиції*",
+    "characters": "символів",
+    "parameters": "Параметри",
+    "addParameter": "+ Додати параметр",
+    "noParameters": "Поки немає параметрів. Натисніть кнопку вище, щоб додати.",
+    "createPosition": "Створити позицію",
+    "cancel": "Скасувати",
+    "debugJson": "Поточний JSON (налагодження)",
+    "errors": {
+      "nameRequired": "Назва позиції обов'язкова",
+      "nameMaxLength": "Максимум 100 символів",
+      "atLeastOneParameter": "Додайте хоча б один параметр",
+      "titleRequired": "Назва обов'язкова",
+      "pointsNonNegative": "Бали не можуть бути від'ємними"
+    }
+  },
+  "PositionParameterFormView": {
+    "...": "існуючі ключі",
+    "parameterForm": {
+      "title": "Параметр",
+      "parameterTitle": "Назва параметра*",
+      "parameterTitlePlaceholder": "Наприклад: Комунікабельність",
+      "description": "Опис",
+      "descriptionPlaceholder": "Опишіть, що оцінюється за цим параметром",
+      "points": "Бали*",
+      "removeButton": "Видалити параметр"
+    }
   }
+
 }

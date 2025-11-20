@@ -9,5 +9,44 @@
 
   "UploadInfoPage" :{
     "upload-file-button-text" : "upload file"
+  },
+  
+  "ProfileComponent" : {
+    "no-profile": "No profiles available. Start a new profile to see it here.",
+    "loading-error": "Failed to load profiles.",
+    "new-profile-button-text": "Create New Profile"
+
+  },
+  "NewPositionCreateView": {
+    "title": "Create New Position",
+    "basicInfo": "Basic Information",
+    "positionName": "Position Name*",
+    "characters": "characters",
+    "parameters": "Parameters",
+    "addParameter": "+ Add Parameter",
+    "noParameters": "No parameters yet. Click the button above to add.",
+    "createPosition": "Create Position",
+    "cancel": "Cancel",
+    "debugJson": "Current JSON (debug)",
+    "errors": {
+      "nameRequired": "Position name is required",
+      "nameMaxLength": "Maximum 100 characters",
+      "atLeastOneParameter": "Add at least one parameter",
+      "titleRequired": "Title is required",
+      "pointsNonNegative": "Points cannot be negative"
+    }
+  },
+  "PositionParameterFormView": {
+    "...": "existing keys",
+    "parameterForm": {
+      "title": "Parameter",
+      "parameterTitle": "Parameter Title*",
+      "parameterTitlePlaceholder": "E.g. Communication Skills",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe what is evaluated by this parameter",
+      "points": "Points*",
+      "removeButton": "Remove parameter"
+    }
   }
+
 }

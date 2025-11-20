@@ -1,6 +1,6 @@
 .MainBlock {
     position: relative;
-    height: calc(100vh - 70px);
+    height: calc(100vh - var(--navbar-height));
     background: url('/img/homeIlustration.jpeg') center/cover no-repeat;
     display: flex;
     flex-direction: column;
@@ -8,6 +8,7 @@
     align-items: center;
     overflow: hidden;
     color: white;
+    width: 100%;
 }
 
 .MainBlock::before {

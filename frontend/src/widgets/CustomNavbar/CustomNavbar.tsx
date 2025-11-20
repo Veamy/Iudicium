@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LanguageSwitcher } from '../../components/LanguageSwitcher/LanguageSwitcher';
 import './CustomNavbar.css';

@@ -4,14 +4,13 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-
   return (
-    <>
-      <CustomNavbar/>
-      <main style={{ minHeight: 'calc(100vh - 70px)', width: '100%'}}>
+    <div className="app-wrapper">
+      <CustomNavbar />
+      <main className="app-main">
         <AppRoutes />
       </main>
-    </>
+    </div>
   );
 }
 
