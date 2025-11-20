@@ -3,27 +3,28 @@ import './InfoPageStyle.css';
 import NewProfileCreateView from './NewProfileCreateView/NewProfileCreateView';
 import NewPositionCreateView from './NewPositionCreateView/NewPositionCreateView';
 import LeftBar from './LeftBar/LeftBar';
+import ProfileView from './ProfileVIew/ProfileView';
 
-// ⚠️ НЕ ЗАБУДЬ ІМПОРТУВАТИ ЦІ КОМПОНЕНТИ, ЯКЩО ЇХ ЩЕ НЕМАЄ:
-// import ProfileDetailView from './ProfileDetailView/ProfileDetailView';
-// import PositionDetailView from './PositionDetailView/PositionDetailView';
 
 export const InfoPage = () => {
-  // 1. Деструктуризація (як ти і зробив)
-  const { typeInfo, idInfo } = useParams(); 
+  const { typeInfo, idInfo } = useParams<{ typeInfo: string; idInfo: string }>(); 
 
   function ChoiceView() {
     if (typeInfo === "profile") {
-      if (idInfo !== "create") {
-        // ⚠️ Перевір, що idInfo існує, або оброби ситуацію, коли він undefined
-        return <p> Pivo</p>;
+      if (idInfo === "create") {
+        return <NewProfileCreateView />;
       }
-      return <NewProfileCreateView />;
+      // Виправлено синтаксис передачі пропсів та додано перевірку на наявність idInfo
+      if (idInfo) {
+          return <ProfileView id={idInfo} />;
+      }
     } else if (typeInfo === "position") {
-      if (idInfo !== "create") {
-        return <p> Pivo</p>;
+      if (idInfo === "create") {
+        return <NewPositionCreateView />;
       }
-      return <NewPositionCreateView />;
+      if (idInfo) {
+        return <p> Pivo ID: {idInfo}</p>;
+      }
     }
     return <h1>Unknown page – 404</h1>;
   }

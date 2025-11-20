@@ -3,7 +3,8 @@ import ItemList from "../../../components/ItemList/ItemList";
 import ROUTES from "../../../ROUTES";
 import ButtonC1 from "../../../components/Buttons/ButtonC1/ButtonC1";
 import './LeftBarStyle.css'
-
+import '../../../env'
+import  API_URL from "../../../env";
 
 const LeftBar = () => {
     const [activeTab, setActiveTab] = useState<'profile' | 'position'>('profile');
@@ -37,7 +38,7 @@ const LeftBar = () => {
                 />
             </div>
 
-            {activeTab === 'profile' && <ItemList typeLink="profile" />}
+            {activeTab === 'profile' && <ItemList sourceUrl={`${API_URL.BACK_END_URL}${API_URL.GET_LIST_PROFILE}`}  typeLink="profile" />}
             {activeTab === 'position' && <ItemList typeLink="position" />}
         </div>
     );

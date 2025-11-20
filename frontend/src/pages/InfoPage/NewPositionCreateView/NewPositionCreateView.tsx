@@ -9,7 +9,7 @@ interface NewPositionCreateViewProps {
   onCancel?: () => void;
 }
 
-const STORAGE_KEY = 'positions_data'; // ключ для localStorage (опціонально)
+const STORAGE_KEY = 'positions_data'; 
 
 const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel }) => {
   const { t } = useTranslation();
