@@ -4,7 +4,7 @@ import NewProfileCreateView from './NewProfileCreateView/NewProfileCreateView';
 import NewPositionCreateView from './NewPositionCreateView/NewPositionCreateView';
 import LeftBar from './LeftBar/LeftBar';
 import ProfileView from './ProfileVIew/ProfileView';
-
+import PositionView from './PositionView/PositionView'
 
 export const InfoPage = () => {
   const { typeInfo, idInfo } = useParams<{ typeInfo: string; idInfo: string }>(); 
@@ -14,7 +14,6 @@ export const InfoPage = () => {
       if (idInfo === "create") {
         return <NewProfileCreateView />;
       }
-      // Виправлено синтаксис передачі пропсів та додано перевірку на наявність idInfo
       if (idInfo) {
           return <ProfileView id={idInfo} />;
       }
@@ -23,7 +22,7 @@ export const InfoPage = () => {
         return <NewPositionCreateView />;
       }
       if (idInfo) {
-        return <p> Pivo ID: {idInfo}</p>;
+        return <PositionView id={idInfo} />;
       }
     }
     return <h1>Unknown page – 404</h1>;

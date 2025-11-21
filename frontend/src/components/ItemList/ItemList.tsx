@@ -8,7 +8,7 @@ import { ROUTES } from '../../ROUTES';
 
 interface ItemList {
   id: string;
-  full_name: string;
+  name: string;
   typeLink?: string;
 }
 

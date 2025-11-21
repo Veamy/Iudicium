@@ -6,16 +6,13 @@
     "mini-descrioption": "Iudicium — a resume analysis tool that examines open sources to provide in-depth candidate assessment.",
     "about-teame": "The Basement Dwellers team that worked from the basement"
   },
-
-  "UploadInfoPage" :{
-    "upload-file-button-text" : "upload file"
+  "UploadInfoPage": {
+    "upload-file-button-text": "Upload files"
   },
-  
-  "ProfileComponent" : {
-    "no-profile": "No profiles available. Start a new profile to see it here.",
+  "ProfileComponent": {
+    "no-profile": "No profiles available. Create a new profile to see it here.",
     "loading-error": "Failed to load profiles.",
     "new-profile-button-text": "Create New Profile"
-
   },
   "NewPositionCreateView": {
     "title": "Create New Position",
@@ -37,7 +34,6 @@
     }
   },
   "PositionParameterFormView": {
-    "...": "existing keys",
     "parameterForm": {
       "title": "Parameter",
       "parameterTitle": "Parameter Title*",
@@ -47,6 +43,90 @@
       "points": "Points*",
       "removeButton": "Remove parameter"
     }
-  }
+  },
+  "PositionView": {
+      "loading": "Loading...",
+      "errorPrefix": "Error",
+      "notFound": "Position data not found.",
+      "parametersTitle": "Evaluation Parameters",
+      "noParameters": "No evaluation parameters defined for this position.",
+      "weight": "Weight",
+      "noDescription": "Description missing.",
+      "debugJson": "Raw JSON Data (for debug)",
+      "deleteButton": "Delete Position",
+      "deleting": "Deleting...",
+      "confirmDeletePosition": "Are you sure you want to delete the position \"{name}\"? This action cannot be undone.",
+      "deletePositionSuccess": "Position \"{name}\" successfully deleted.",
+      "errors": {
+        "failedToLoad": "Failed to load",
+        "unknownError": "Unknown error during loading",
+        "failedToDeletePosition": "Failed to delete position.",
+        "unknownDeleteError": "Unknown error during deletion."
+      }
+  },
+  "LeftBar": {
+    "profilesTab": "Profiles",
+    "positionsTab": "Positions",
+    "createNewProfileButton": "Create New Profile",
+    "createNewPositionButton": "Create New Position"
+  },
+  "ProfileView": {
+    "loading": "Loading profile...",
+    "errorPrefix": "Error",
+    "notFound": "Profile data not found.",
+    "candidateId": "Candidate ID",
+    "summaryTitle": "Summary and Conclusion",
+    "basicInfo": "Basic Information",
+    "birthDate": "Date of Birth",
+    "contacts": "Contacts",
+    "location": "Location",
+    "additionalInfo": "Additional Info",
+    "skillsTitle": "Skills",
+    "experienceTitle": "Work Experience",
+    "educationTitle": "Education and Certificates",
+    "certifications": "Certifications",
+    "analysisTitle": "Assessment and Analysis",
+    "keyIndicators": "Key Indicators",
+    "relevanceTitle": "Position Relevance",
+    "riskTitle": "Risk Analysis",
+    "deleteButton": "Delete Profile",
+    "deleting": "Deleting...",
+    "debugJson": "Raw JSON Data (for debug)",
+    "yearsAbbreviation": "yrs",
+    "responsibilities": "Responsibilities",
+    "confirmDelete": "Are you sure you want to delete the candidate profile \"{name}\"? This action cannot be undone.",
+    "deleteSuccess": "Candidate profile \"{name}\" successfully deleted.",
+    "deleteErrorPrefix": "Profile deletion error",
 
+    "labels": {
+      "trust": "Trust Score",
+      "integrity": "Integrity Score",
+      "overall": "Overall Index",
+      "leadership": "Leadership",
+      "relevance": "Relevance"
+    },
+    "relevance": {
+      "overallScore": "Overall Score",
+      "experience": "Experience Relevance",
+      "competencies": "Competency Match",
+      "level": "Level Match"
+    },
+    "risk": {
+      "attention": "ATTENTION",
+      "frequentJobChanges": "Frequent Job Changes",
+      "competencyMismatch": "Competency Mismatch",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "errors": {
+      "failedToLoad": "Failed to load",
+      "unknownError": "Unknown error during loading",
+      "failedToDelete": "Deletion failed.",
+      "unknownDeleteError": "Unknown error during deletion."
+    }
+  },
+  "ButtonDownloadFile": {
+    "downloadFile": "Download file",
+    "downloadDisabled": "Download link is missing"
+  }
 }

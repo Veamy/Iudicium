@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import API_URL from "../../../env"; 
+import { useNavigate } from "react-router-dom";
+import API_URL from "../../../env";
+import ButtonC2 from "../../../components/Buttons/ButtonC2/ButtonC2";
+import { useTranslation } from 'react-i18next';
+// Припускаємо, що ButtonDownloadFile знаходиться у відносному шляху
+import ButtonDownloadFile from "../../../components/Buttons/ButtonDownloadFile/ButtonDownloadFile"; 
 
-interface ProfileViewProps {
-  id: string;
-}
+const HOME_ROUTE = '/';
 
 interface WorkExperience {
   years: string;
@@ -64,15 +67,24 @@ interface ProfileData {
   summary_conclusion: string;
 }
 
+interface FileData { // Інтерфейс для файлів
+  id: string;
+  file_name: string;
+  content_type: string;
+  file_size: number;
+  candidate_id: string;
+}
+
 interface UserData {
   id: string;
   profile: ProfileData;
-  files: Array<any>; 
+  files: FileData[]; // Використовуємо новий інтерфейс
+  error_files?: any[];
 }
 
-// =================================================================
-// ПІДКОМПОНЕНТИ ДЛЯ СТРУКТУРНОГО ВИВЕДЕННЯ
-// =================================================================
+interface ProfileViewProps {
+  id: string;
+}
 
 const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
   <h3 style={{ borderBottom: '2px solid #007bff', paddingBottom: '5px', marginTop: '30px', color: '#007bff' }}>
@@ -80,11 +92,11 @@ const SectionHeader: React.FC<{ title: string }> = ({ title }) => (
   </h3>
 );
 
-const ExperienceItem: React.FC<{ item: WorkExperience }> = ({ item }) => (
+const ExperienceItem: React.FC<{ item: WorkExperience, t: (key: string) => string }> = ({ item, t }) => (
   <li style={{ borderLeft: '3px solid #ccc', paddingLeft: '10px', marginBottom: '15px' }}>
     <p><strong>{item.position}</strong> ({item.years})</p>
-    <p style={{ margin: '0 0 5px 0' }}>{item.company} | {item.duration_years} р.</p>
-    <p style={{ fontStyle: 'italic', fontSize: '0.9em' }}>Обов'язки: {item.responsibilities}</p>
+    <p style={{ margin: '0 0 5px 0' }}>{item.company} | {item.duration_years} {t('ProfileView.yearsAbbreviation')}.</p>
+    <p style={{ fontStyle: 'italic', fontSize: '0.9em' }}>{t('ProfileView.responsibilities')}: {item.responsibilities}</p>
   </li>
 );
 
@@ -95,11 +107,18 @@ const ScoreBadge: React.FC<{ label: string; score: number }> = ({ label, score }
 );
 
 const ProfileView = ({ id }: ProfileViewProps) => {
-  const [user, setUser] = useState<UserData | null>(null); 
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const tp = (key: string) => String(t(`ProfileView.${key}`));
+
   const API_ENDPOINT = API_URL.BACK_END_URL + '/candidate/get/' + id;
+  const DELETE_ENDPOINT = API_URL.BACK_END_URL + '/candidate/delete/' + id;
+  const MINIO_DOWNLOAD_BASE = API_URL.BACK_END_URL + '/minio/download/'; // Базовий URL для скачування
 
   useEffect(() => {
     fetch(API_ENDPOINT, {
@@ -108,7 +127,7 @@ const ProfileView = ({ id }: ProfileViewProps) => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status} - Невдала спроба завантаження`);
+          throw new Error(`HTTP ${response.status} - ${String(t('ProfileView.errors.failedToLoad'))}`);
         }
         return response.json();
       })
@@ -118,44 +137,104 @@ const ProfileView = ({ id }: ProfileViewProps) => {
       })
       .catch((err) => {
         console.error('Error fetching user profile:', err);
-        const errorMessage = err.message || 'Невідома помилка під час завантаження';
+        const errorMessage = err.message || String(t('ProfileView.errors.unknownError'));
         setError(errorMessage);
         setLoading(false);
       });
-  }, [id, API_ENDPOINT]);
+  }, [id, API_ENDPOINT, t]);
 
-  if (loading) return <div>Завантаження профілю...</div>;
-  if (error) return <div style={{ color: 'red', padding: '20px' }}>Помилка: {error}</div>;
+  const handleDelete = async () => {
+    const confirmMessage = tp('confirmDelete').replace('{name}', user?.profile.candidate.full_name || '');
 
-  if (!user || !user.profile) return <div style={{ padding: '20px' }}>Дані профілю не знайдені.</div>;
+    if (!window.confirm(confirmMessage)) {
+        return;
+    }
+
+    setIsDeleting(true);
+
+    try {
+        const response = await fetch(DELETE_ENDPOINT, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText || String(t('ProfileView.errors.failedToDelete'))}`);
+        }
+
+        const successAlertMessage = tp('deleteSuccess').replace('{name}', user?.profile.candidate.full_name || '');
+        alert(successAlertMessage);
+        navigate(HOME_ROUTE);
+
+    } catch (err) {
+        const unknownDeleteError = String(t('ProfileView.errors.unknownDeleteError'));
+        const errorMessage = (err instanceof Error) ? err.message : unknownDeleteError;
+        
+        setError(errorMessage);
+        alert(`${tp('deleteErrorPrefix')}: ${errorMessage}`);
+        console.error('Error deleting profile:', err);
+    } finally {
+        setIsDeleting(false);
+    }
+  };
+
+  if (loading) return <div>{tp('loading')}</div>;
+  if (error) return <div style={{ color: 'red', padding: '20px' }}>{tp('errorPrefix')}: {error}</div>;
+
+  if (!user || !user.profile) return <div style={{ padding: '20px' }}>{tp('notFound')}</div>;
 
   const profile = user.profile.candidate;
   const evaluation = user.profile.evaluation;
   const risk = user.profile.risk_analysis;
   const relevance = user.profile.position_relevance;
 
+  // Отримання даних файлу (беремо перший файл з масиву)
+  const primaryFile = user.files && user.files.length > 0 ? user.files[0] : null;
+  const downloadUrl = primaryFile ? MINIO_DOWNLOAD_BASE + primaryFile.id : undefined;
+
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif', backgroundColor: '#fff' }}>
+
+      {/* Кнопки дій */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginBottom: '20px' }}>
+        
+        {/* Кнопка скачування файлу */}
+        {primaryFile && (
+          <ButtonDownloadFile
+            title={`${tp('downloadCV')} (${primaryFile.file_name})`}
+            sourceUrl={downloadUrl}
+          />
+        )}
+        
+        {/* Кнопка видалення профілю */}
+        <ButtonC2
+          text={isDeleting ? tp('deleting') : tp('deleteButton')}
+          onClick={handleDelete}
+          disabled={isDeleting}
+        />
+      </div>
+
       <h1>{profile.full_name}</h1>
-      <p style={{ color: '#666', marginBottom: '30px' }}>ID кандидата: {user.id}</p>
+      <p style={{ color: '#666', marginBottom: '30px' }}>{tp('candidateId')}: {user.id}</p>
 
       {/* Загальний висновок */}
       <div style={{ border: '1px solid #007bff', padding: '15px', borderRadius: '5px', backgroundColor: '#e9f7ff', marginBottom: '30px' }}>
-        <h4 style={{ color: '#007bff', marginTop: '0' }}>Резюме та висновок</h4>
+        <h4 style={{ color: '#007bff', marginTop: '0' }}>{tp('summaryTitle')}</h4>
         <p>{user.profile.summary_conclusion}</p>
       </div>
 
       {/* Базова інформація */}
-      <SectionHeader title="Основні дані" />
+      <SectionHeader title={tp('basicInfo')} />
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-        <p><strong>Дата народження:</strong> {profile.date_of_birth}</p>
-        <p><strong>Контакти:</strong> {profile.contacts.email}, {profile.contacts.phone}</p>
-        <p><strong>Локація:</strong> {profile.contacts.location}</p>
-        <p><strong>Додатково:</strong> {profile.additional_info}</p>
+        <p><strong>{tp('birthDate')}:</strong> {profile.date_of_birth}</p>
+        <p><strong>{tp('contacts')}:</strong> {profile.contacts.email}, {profile.contacts.phone}</p>
+        <p><strong>{tp('location')}:</strong> {profile.contacts.location}</p>
+        <p><strong>{tp('additionalInfo')}:</strong> {profile.additional_info}</p>
       </div>
 
       {/* Навички */}
-      <SectionHeader title="Навички (Skills)" />
+      <SectionHeader title={tp('skillsTitle')} />
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
         {profile.skills.map(skill => (
           <span key={skill} style={{ backgroundColor: '#f0f0f0', padding: '5px 10px', borderRadius: '15px', fontSize: '0.9em' }}>
@@ -165,54 +244,53 @@ const ProfileView = ({ id }: ProfileViewProps) => {
       </div>
 
       {/* Досвід роботи */}
-      <SectionHeader title="Досвід роботи" />
+      <SectionHeader title={tp('experienceTitle')} />
       <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
         {profile.work_experience.map((exp, index) => (
-          <ExperienceItem key={index} item={exp} />
+          <ExperienceItem key={index} item={exp} t={t} />
         ))}
       </ul>
 
       {/* Освіта та сертифікати */}
-      <SectionHeader title="Освіта та Сертифікати" />
+      <SectionHeader title={tp('educationTitle')} />
       {profile.education.map((edu, index) => (
         <p key={index} style={{ margin: '5px 0' }}>
           <strong>{edu.degree}</strong> ({edu.years}) — {edu.institution}, {edu.specialization}
         </p>
       ))}
-      {profile.certifications.length > 0 && (
-        <p><strong>Сертифікати:</strong> {profile.certifications.join(', ')}</p>
-      )}
+  
 
       {/* Аналіз та оцінка */}
-      <SectionHeader title="Оцінка та Аналіз" />
+      <SectionHeader title={tp('analysisTitle')} />
       <div>
-        <h4 style={{ marginBottom: '5px' }}>Ключові показники:</h4>
-        <ScoreBadge label="Trust Score" score={evaluation.trust_score} />
-        <ScoreBadge label="Integrity Score" score={evaluation.integrity_score} />
-        <ScoreBadge label="Overall Index" score={evaluation.overall_profile_index} />
-        <ScoreBadge label="Leadership" score={evaluation.leadership_maturity_score} />
-        <ScoreBadge label="Relevance" score={evaluation.relevance_to_position_score} />
+        <h4 style={{ marginBottom: '5px' }}>{tp('keyIndicators')}:</h4>
+        <ScoreBadge label={tp('labels.trust')} score={evaluation.trust_score} />
+        <ScoreBadge label={tp('labels.integrity')} score={evaluation.integrity_score} />
+        <ScoreBadge label={tp('labels.overall')} score={evaluation.overall_profile_index} />
+        <ScoreBadge label={tp('labels.leadership')} score={evaluation.leadership_maturity_score} />
+        <ScoreBadge label={tp('labels.relevance')} score={evaluation.relevance_to_position_score} />
       </div>
 
       <div style={{ marginTop: '20px' }}>
-        <h4 style={{ marginBottom: '5px' }}>Релевантність до Позиції:</h4>
-        <p><strong>Загальний бал:</strong> {relevance.overall_score}/10</p>
-        <p><strong>Релевантність досвіду:</strong> {relevance.experience_relevance}</p>
-        <p><strong>Відповідність компетенцій:</strong> {relevance.key_competencies_match}</p>
-        <p><strong>Відповідність рівню:</strong> {relevance.responsibility_level_match}</p>
+        <h4 style={{ marginBottom: '5px' }}>{tp('relevanceTitle')}:</h4>
+        <p><strong>{tp('relevance.overallScore')}:</strong> {relevance.overall_score}/10</p>
+        <p><strong>{tp('relevance.experience')}:</strong> {relevance.experience_relevance}</p>
+        <p><strong>{tp('relevance.competencies')}:</strong> {relevance.key_competencies_match}</p>
+        <p><strong>{tp('relevance.level')}:</strong> {relevance.responsibility_level_match}</p>
       </div>
 
       {/* Аналіз ризиків */}
       <div style={{ marginTop: '20px', padding: '10px', border: risk.notes ? '1px dashed #dc3545' : '1px dashed #ccc' }}>
-        <h4 style={{ color: risk.notes ? '#dc3545' : '#333', marginTop: '0' }}>Аналіз ризиків:</h4>
-        {risk.notes && <p style={{ color: '#dc3545' }}>**УВАГА:** {risk.notes}</p>}
-        <p>Часта зміна роботи: {risk.frequent_job_changes ? 'Так' : 'Ні'}</p>
-        <p>Несумісність компетенцій: {risk.competency_mismatch ? 'Так' : 'Ні'}</p>
+        <h4 style={{ color: risk.notes ? '#dc3545' : '#333', marginTop: '0' }}>{tp('riskTitle')}:</h4>
+        {risk.notes && <p style={{ color: '#dc3545' }}>**{tp('risk.attention')}:** {risk.notes}</p>}
+        <p>{tp('risk.frequentJobChanges')}: {risk.frequent_job_changes ? tp('risk.yes') : tp('risk.no')}</p>
+        <p>{tp('risk.competencyMismatch')}: {risk.competency_mismatch ? tp('risk.yes') : tp('risk.no')}</p>
       </div>
+
 
       {/* Дебаг / Сирий JSON */}
       <details style={{ marginTop: '40px' }}>
-        <summary style={{ cursor: 'pointer', color: '#007bff' }}>Сирі дані JSON (для дебагу)</summary>
+        <summary style={{ cursor: 'pointer', color: '#007bff' }}>{tp('debugJson')}</summary>
         <pre style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px', overflowX: 'auto' }}>
           {JSON.stringify(user, null, 2)}
         </pre>
@@ -221,4 +299,4 @@ const ProfileView = ({ id }: ProfileViewProps) => {
   );
 };
 
-export default ProfileView;
+export default ProfileView; 

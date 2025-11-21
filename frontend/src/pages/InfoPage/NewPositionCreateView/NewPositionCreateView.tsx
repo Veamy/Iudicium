@@ -1,24 +1,35 @@
 // src/views/NewPositionCreateView.tsx
+
 import { useState, useCallback } from 'react';
 import PositionParameterFormView from '../../../components/PositionParameterFormView/PositionParameterFormView';
 import { type PositionParameter } from '../../../types/PositionParameter';
 import { type Position } from '../../../types/Position';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom'; // <--- Додано для навігації
+import { ROUTES } from '../../../ROUTES'; // <--- Припускаємо, що маршрути доступні
 
 interface NewPositionCreateViewProps {
   onCancel?: () => void;
 }
 
-const STORAGE_KEY = 'positions_data'; 
+// Тип відповіді від бекенда (припускаємо, що повертає ID)
+interface PositionCreateResponse {
+    id: string; // Новий ID позиції
+    // Можуть бути інші поля, якщо потрібно
+}
 
 const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate(); // <--- Ініціалізація навігації
 
   const [name, setName] = useState('');
   const [parameters, setParameters] = useState<PositionParameter[]>([]);
   const [nameError, setNameError] = useState('');
   const [parametersError, setParametersError] = useState('');
   const [parameterErrors, setParameterErrors] = useState<string[]>([]);
+  
+  const [isSubmitting, setIsSubmitting] = useState(false); // <--- Стан завантаження
+  const [apiError, setApiError] = useState(''); // <--- Стан помилки API
 
   const handleAddParameter = useCallback(() => {
     setParameters((prev) => [...prev, { title: '', description: '', point: 0 }]);
@@ -51,6 +62,7 @@ const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel 
 
   const validate = useCallback((): boolean => {
     let isValid = true;
+    setApiError(''); // Скидаємо помилку API при новій валідації
 
     if (!name.trim()) {
       setNameError(t('NewPositionCreateView.errors.nameRequired'));
@@ -81,55 +93,49 @@ const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel 
     return isValid;
   }, [name, parameters, t]);
 
-  const saveToJsonFile = (position: Position) => {
-    // Завантажуємо існуючі дані (якщо є)
-    let existing: Position[] = [];
+  const sendPositionToServer = useCallback(async (positionData: Position) => {
+    setIsSubmitting(true);
+    setApiError('');
+
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) existing = JSON.parse(saved);
-      if (!Array.isArray(existing)) existing = [];
-    } catch {
-      existing = [];
+        const response = await fetch('/api/v1/position/create', { // <--- Кінцева точка API
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(positionData),
+        });
+
+        if (!response.ok) {
+            // Припускаємо, що бекенд повертає JSON з помилкою
+            const errorData = await response.json().catch(() => ({ message: 'Сервер повернув незрозумілу помилку.' }));
+            throw new Error(errorData.message || `HTTP ${response.status}: Невідома помилка сервера.`);
+        }
+
+        const data: PositionCreateResponse = await response.json();
+
+        if (data.id) {
+            // Успіх: перенаправляємо на сторінку перегляду
+            const newPath = `${ROUTES.INFO}/position/${data.id}`;
+            navigate(newPath);
+            return; // Виходимо, щоб не скидати форму
+        }
+
+        throw new Error('Успішна відповідь, але ID нової позиції відсутній.');
+
+    } catch (error) {
+        const errorMessage = (error instanceof Error) ? error.message : 'Невідома помилка мережі.';
+        setApiError(errorMessage);
+        console.error('Помилка при створенні позиції:', error);
+    } finally {
+        setIsSubmitting(false);
     }
-
-    // Додаємо нову позицію
-    const updatedData = [...existing, { ...position, id: Date.now(), createdAt: new Date().toISOString() }];
-
-    // Зберігаємо назад у localStorage (для майбутніх сесій)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData, null, 2));
-    } catch (e) {
-      console.warn('Не вдалося зберегти в localStorage (можливо, переповнено)');
-    }
-
-    // Створюємо та завантажуємо файл — безпечно додамо елемент в DOM і скасуємо URL трохи пізніше
-    const dataStr = JSON.stringify(updatedData, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `positions_${new Date().toISOString().slice(0, 10)}.json`;
-    // some browsers require the link to be in the document
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-
-    // Remove anchor and revoke URL after a short delay to ensure the download starts
-    setTimeout(() => {
-      try {
-        URL.revokeObjectURL(url);
-      } catch (e) {
-        // ignore
-      }
-      if (a.parentNode) a.parentNode.removeChild(a);
-    }, 150);
-  };
+  }, [navigate]);
 
   const handleSubmit = useCallback(() => {
     if (!validate()) return;
 
-    const position: Position = {
+    const positionData: Position = {
       name: name.trim(),
       parameters: parameters.map((p) => ({
         title: p.title.trim(),
@@ -138,27 +144,39 @@ const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel 
       })),
     };
 
-    saveToJsonFile(position);
+    sendPositionToServer(positionData);
+    
+    // Примітка: Скидання форми (setName, setParameters) відбувається лише 
+    // після навігації (тобто не потрібно, якщо навігація успішна) або
+    // після скасування. Ми не скидаємо форму тут, щоб користувач міг 
+    // спробувати повторно після помилки API.
+  }, [name, parameters, validate, sendPositionToServer]);
 
-    // Опціонально: скидаємо форму після збереження
-    setName('');
-    setParameters([]);
-    setParameterErrors([]);
-    setNameError('');
-    setParametersError('');
-
-    // show a non-blocking success message instead of alert (alerts can interfere with focus/navigation)
-    setSuccessMessage(t('NewPositionCreateView.success.saved'));
-    setTimeout(() => setSuccessMessage(''), 3000);
-  }, [name, parameters, validate, t]);
-
-  const [successMessage, setSuccessMessage] = useState('');
 
   const tp = (key: string) => t(`NewPositionCreateView.${key}`);
+
+  // Стиль спінера для відображення завантаження
+  const spinnerStyle: React.CSSProperties = {
+      display: 'inline-block',
+      width: '1.2em',
+      height: '1.2em',
+      verticalAlign: 'middle',
+      borderRadius: '50%',
+      border: '2px solid white',
+      borderRightColor: 'transparent',
+      animation: 'spin 1s linear infinite'
+  };
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: 20 }}>
       <h2>{tp('title')}</h2>
+      
+      {/* Повідомлення про помилку API */}
+      {apiError && (
+          <div style={{ color: 'white', backgroundColor: '#dc3545', padding: '10px', borderRadius: '4px', marginBottom: '20px' }}>
+              **Помилка API:** {apiError}
+          </div>
+      )}
 
       {/* === Назва позиції === */}
       <section style={{ marginBottom: 32 }}>
@@ -174,6 +192,7 @@ const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel 
             }}
             maxLength={100}
             style={{ width: '100%', padding: 8, fontSize: 16 }}
+            disabled={isSubmitting}
           />
           {nameError && <div style={{ color: 'red' }}>{nameError}</div>}
           <small>
@@ -186,7 +205,7 @@ const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel 
       <section style={{ marginBottom: 32 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <h3>{tp('parameters')}</h3>
-          <button type="button" onClick={handleAddParameter}>
+          <button type="button" onClick={handleAddParameter} disabled={isSubmitting}>
             {tp('addParameter')}
           </button>
         </div>
@@ -214,19 +233,39 @@ const NewPositionCreateView: React.FC<NewPositionCreateViewProps> = ({ onCancel 
 
       {/* === Кнопки === */}
       <div style={{ marginTop: 40 }}>
-        <button onClick={handleSubmit} style={{ marginRight: 16, padding: '12px 24px', fontSize: 16 }}>
-          {tp('createPosition')}
+        <button 
+          onClick={handleSubmit} 
+          disabled={isSubmitting} // Вимикаємо кнопку під час завантаження
+          style={{ 
+            marginRight: 16, 
+            padding: '12px 24px', 
+            fontSize: 16,
+            // Додаємо стилі для кнопки під час завантаження
+            opacity: isSubmitting ? 0.7 : 1, 
+            backgroundColor: '#007bff', 
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: isSubmitting ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {isSubmitting ? (
+              <>
+                <span style={{ marginRight: '8px' }}>Створення...</span>
+                <span style={spinnerStyle} />
+              </>
+          ) : (
+            tp('createPosition')
+          )}
         </button>
         {onCancel && (
-          <button onClick={onCancel} style={{ padding: '12px 24px' }}>
+          <button onClick={onCancel} style={{ padding: '12px 24px' }} disabled={isSubmitting}>
             {tp('cancel')}
           </button>
         )}
       </div>
 
-      {successMessage && (
-        <div style={{ color: 'green', marginTop: 12 }}>{successMessage}</div>
-      )}
+      {/* Видалили successMessage, оскільки успішне збереження призводить до навігації */}
 
       {/* === Дебаг === */}
       <details style={{ marginTop: 40 }}>

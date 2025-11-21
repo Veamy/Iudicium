@@ -4,12 +4,12 @@
     "guide-button-text": "Інструкція з роботи з Iudicium",
     "analyze-button-text": "Проаналізувати резюме",
     "mini-descrioption": "Iudicium — інструмент для аналізу резюме, який вивчає відкриті джерела для надання глибокої оцінки кандидатів.",
-    "about-teame" : "The Basement Dwellers команда яка працювала з подвалу"
+    "about-teame": "The Basement Dwellers — команда, яка працювала з підвалу"
   },
-   "UploadInfoPage" :{
-    "upload-file-button-text" : "Завантажити файли"
+  "UploadInfoPage": {
+    "upload-file-button-text": "Завантажити файли"
   },
-  "ProfileComponent" : {
+  "ProfileComponent": {
     "no-profile": "Профілів немає. Створіть новий профіль, щоб побачити його тут.",
     "loading-error": "Не вдалося завантажити профілі.",
     "new-profile-button-text": "Новий профіль"
@@ -34,7 +34,6 @@
     }
   },
   "PositionParameterFormView": {
-    "...": "існуючі ключі",
     "parameterForm": {
       "title": "Параметр",
       "parameterTitle": "Назва параметра*",
@@ -44,6 +43,84 @@
       "points": "Бали*",
       "removeButton": "Видалити параметр"
     }
-  }
+  },
+  "PositionView": {
+    "loading": "Завантаження...",
+    "errorPrefix": "Помилка",
+    "notFound": "Дані позиції не знайдені.",
+    "parametersTitle": "Параметри Оцінювання",
+    "noParameters": "Для цієї позиції не визначено жодних параметрів оцінювання.",
+    "weight": "Вага",
+    "noDescription": "Опис відсутній.",
+    "debugJson": "Сирі дані JSON (для дебагу)",
+    "deleteButton": "Видалити Позицію",
+    "deleting": "Видалення...",
+    "confirmDeletePosition": "Ви впевнені, що хочете видалити позицію \"{name}\"? Цю дію не можна буде скасувати.",
+    "deletePositionSuccess": "Позицію \"{name}\" успішно видалено.",
+    "errors": {
+      "failedToLoad": "Невдала спроба завантаження",
+      "unknownError": "Невідома помилка під час завантаження",
+      "failedToDeletePosition": "Невдале видалення позиції.",
+      "unknownDeleteError": "Невідома помилка під час видалення."
+    }
+  },
+  "ProfileView": {
+    "loading": "Завантаження профілю...",
+    "errorPrefix": "Помилка",
+    "notFound": "Дані профілю не знайдені.",
+    "candidateId": "ID кандидата",
+    "summaryTitle": "Резюме та висновок",
+    "basicInfo": "Основні дані",
+    "birthDate": "Дата народження",
+    "contacts": "Контакти",
+    "location": "Локація",
+    "additionalInfo": "Додатково",
+    "skillsTitle": "Навички (Skills)",
+    "experienceTitle": "Досвід роботи",
+    "educationTitle": "Освіта та Сертифікати",
+    "certifications": "Сертифікати",
+    "analysisTitle": "Оцінка та Аналіз",
+    "keyIndicators": "Ключові показники",
+    "relevanceTitle": "Релевантність до Позиції",
+    "riskTitle": "Аналіз ризиків",
+    "deleteButton": "Видалити Профіль",
+    "deleting": "Видалення...",
+    "debugJson": "Сирі дані JSON (для дебагу)",
+    "yearsAbbreviation": "р",
+    "responsibilities": "Обов'язки",
+    "confirmDelete": "Ви впевнені, що хочете видалити профіль кандидата \"{name}\"? Цю дію не можна буде скасувати.",
+    "deleteSuccess": "Профіль кандидата \"{name}\" успішно видалено.",
+    "deleteErrorPrefix": "Помилка видалення профілю",
 
+    "labels": {
+      "trust": "Trust Score",
+      "integrity": "Integrity Score",
+      "overall": "Overall Index",
+      "leadership": "Leadership",
+      "relevance": "Relevance"
+    },
+    "relevance": {
+      "overallScore": "Загальний бал",
+      "experience": "Релевантність досвіду",
+      "competencies": "Відповідність компетенцій",
+      "level": "Відповідність рівню"
+    },
+    "risk": {
+      "attention": "УВАГА",
+      "frequentJobChanges": "Часта зміна роботи",
+      "competencyMismatch": "Несумісність компетенцій",
+      "yes": "Так",
+      "no": "Ні"
+    },
+    "errors": {
+      "failedToLoad": "Невдала спроба завантаження",
+      "unknownError": "Невідома помилка під час завантаження",
+      "failedToDelete": "Невдале видалення.",
+      "unknownDeleteError": "Невідома помилка під час видалення."
+    }
+  },
+  "ButtonDownloadFile": {
+    "downloadFile": "Завантажити файл",
+    "downloadDisabled": "Посилання для завантаження відсутнє"
+  }
 }
