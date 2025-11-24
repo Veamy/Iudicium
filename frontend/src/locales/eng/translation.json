@@ -71,6 +71,11 @@
     "createNewPositionButton": "Create New Position"
   },
   "ProfileView": {
+    "position": "Evaluation Position",
+    "positionError": "Error loading position name",
+    "positionNotFound": "Position name not found in list",
+    "positionNotAssigned": "Position not assigned",
+    "positionUnknown": "Unknown position",
     "loading": "Loading profile...",
     "errorPrefix": "Error",
     "notFound": "Profile data not found.",
@@ -97,6 +102,8 @@
     "confirmDelete": "Are you sure you want to delete the candidate profile \"{name}\"? This action cannot be undone.",
     "deleteSuccess": "Candidate profile \"{name}\" successfully deleted.",
     "deleteErrorPrefix": "Profile deletion error",
+    "exportButton": "Export Profile",
+    "exportAs": "Export as",
 
     "labels": {
       "trust": "Trust Score",
@@ -128,5 +135,22 @@
   "ButtonDownloadFile": {
     "downloadFile": "Download file",
     "downloadDisabled": "Download link is missing"
+  },
+  "NewProfileCreateView": {
+    "title": "Create New Profile",
+    "promptLabel": "Prompt Text:",
+    "promptPlaceholder": "Enter any additional instructions for the AI.",
+    "uploadButtonText": "Upload Files (Resume/CV)",
+    "clearAllButton": "Clear All",
+    "createProfileButton": "Create Profile",
+    "sending": "Creating...",
+    "defaultPrompt": "Create candidate profile based on the provided documents.",
+    "errors": {
+      "selectFileAlert": "Please select at least one file.",
+      "failedToCreateProfile": "Failed to create profile.",
+      "idMissingAlert": "Profile created, but ID is missing from the response.",
+      "unknownUploadError": "Unknown error during file upload.",
+      "uploadErrorPrefix": "An error occurred"
+    }
   }
 }
