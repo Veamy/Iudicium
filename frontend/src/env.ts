@@ -5,7 +5,8 @@ const API_URL = {
     GET_PROFILE_ENDPOINT: '/candidate/get',
     GET_POSITION_ENDPOINT: '/position/get',
     GET_LIST_PROFILE: '/candidate/get-all',
-    GET_LIST_POSITION: '/position/get-all'
+    GET_LIST_POSITION: '/position/get-all',
+    GENERATE_QUESTIONS: '/questions'
 };
 
 export default API_URL;
@@ -22,6 +23,9 @@ export const API_ENDPOINTS = {
     },
     MINIO: {
         DOWNLOAD: (fileId: string) => `${API_URL.BACK_END_URL}/minio/download/${fileId}`,
+    },
+    AI : {
+        GET_QUESTIONS: (id : string ) => `${API_URL.BACK_END_URL}${API_URL.GENERATE_QUESTIONS}/${id}`
     }
 };
 

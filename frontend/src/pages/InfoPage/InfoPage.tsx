@@ -5,7 +5,7 @@ import NewPositionCreateView from './NewPositionCreateView/NewPositionCreateView
 import LeftBar from './LeftBar/LeftBar';
 import ProfileView from './ProfileVIew/ProfileView';
 import PositionView from './PositionView/PositionView';
-import React from 'react';
+
 
 const CREATE = 'create';
 const TYPE_PROFILE = 'profile';
@@ -34,11 +34,11 @@ export const InfoPage = () => {
       }
     }
     
-    return <h1 style={{ padding: 'var(--gap)', color: 'var(--alert)' }}>{FALLBACK_MESSAGE}</h1>;
+    return <></>;
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--bg)', width: '100%' }}>
       <LeftBar /> 
       
       <div 
@@ -47,11 +47,10 @@ export const InfoPage = () => {
             flexGrow: 1, 
             padding: 'calc(var(--gap) * 1.5)', 
             overflowY: 'auto',
-            width: '100%',
-            maxWidth: '100%'
+            width: '100%'
         }}
       >
-        <div key={`${typeInfo}-${idInfo}`} style={{ width: '100%' }}>
+        <div key={`${typeInfo}-${idInfo}`} >
             {renderView()}
         </div>
       </div>

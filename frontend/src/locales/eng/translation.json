@@ -1,6 +1,7 @@
 {
   "HomePage": {
-    "hz": "Iudicium — assessment that sees deeper.",
+    "logo": "Iudicium",
+    "slogan": "See What Others Miss.",
     "guide-button-text": "Iudicium User Guide",
     "analyze-button-text": "Analyze Resume",
     "mini-descrioption": "Iudicium — a resume analysis tool that examines open sources to provide in-depth candidate assessment.",
@@ -44,31 +45,56 @@
       "removeButton": "Remove parameter"
     }
   },
-  "PositionView": {
-      "loading": "Loading...",
-      "errorPrefix": "Error",
-      "notFound": "Position data not found.",
-      "parametersTitle": "Evaluation Parameters",
-      "noParameters": "No evaluation parameters defined for this position.",
-      "weight": "Weight",
-      "noDescription": "Description missing.",
-      "debugJson": "Raw JSON Data (for debug)",
-      "deleteButton": "Delete Position",
-      "deleting": "Deleting...",
-      "confirmDeletePosition": "Are you sure you want to delete the position \"{name}\"? This action cannot be undone.",
-      "deletePositionSuccess": "Position \"{name}\" successfully deleted.",
-      "errors": {
-        "failedToLoad": "Failed to load",
-        "unknownError": "Unknown error during loading",
-        "failedToDeletePosition": "Failed to delete position.",
-        "unknownDeleteError": "Unknown error during deletion."
-      }
-  },
   "LeftBar": {
     "profilesTab": "Profiles",
     "positionsTab": "Positions",
     "createNewProfileButton": "Create New Profile",
     "createNewPositionButton": "Create New Position"
+  },
+  "ButtonDownloadFile": {
+    "downloadFile": "Download file",
+    "downloadDisabled": "Download link is missing"
+  },
+"NewProfileCreateView": {
+    "title": "Create New Profile",
+    "promptLabel": "Prompt Text:",
+    "promptPlaceholder": "Enter any additional instructions for the AI.",
+    "websearchToggleLabel": "Enable Web Search (for data actualization)",
+    "uploadButtonText": "Upload Files (Resume/CV)",
+    "clearAllButton": "Clear All",
+    "createProfileButton": "Create Profile",
+    "sending": "Creating...",
+    "defaultPrompt": "Create candidate profile based on the provided documents.",
+    "createNewPositionButton": "Create New Position",
+    "selectedPosition": "Selected Position",
+    "errors": {
+      "selectFileAlert": "Please select at least one file.",
+      "selectPositionAlert": "Please select a position.",
+      "failedToCreateProfile": "Failed to create profile.",
+      "idMissingAlert": "Profile created, but ID is missing from the response.",
+      "unknownUploadError": "Unknown error during file upload.",
+      "uploadErrorPrefix": "An error occurred"
+    }
+  },
+  "PositionView": {
+    "loading": "Loading...",
+    "errorPrefix": "Error",
+    "notFound": "Position data not found.",
+    "parametersTitle": "Evaluation Parameters",
+    "noParameters": "No evaluation parameters defined for this position.",
+    "weight": "Weight",
+    "noDescription": "Description missing.",
+    "debugJson": "Raw JSON Data (for debug)",
+    "deleteButton": "Delete Position",
+    "deleting": "Deleting...",
+    "confirmDeletePosition": "Are you sure you want to delete the position \"{name}\"? This action cannot be undone.",
+    "deletePositionSuccess": "Position \"{name}\" successfully deleted.",
+    "errors": {
+      "failedToLoad": "Failed to load",
+      "unknownError": "Unknown error during loading",
+      "failedToDeletePosition": "Failed to delete position.",
+      "unknownDeleteError": "Unknown error during deletion."
+    }
   },
   "ProfileView": {
     "position": "Evaluation Position",
@@ -104,7 +130,6 @@
     "deleteErrorPrefix": "Profile deletion error",
     "exportButton": "Export Profile",
     "exportAs": "Export as",
-
     "labels": {
       "trust": "Trust Score",
       "integrity": "Integrity Score",
@@ -130,27 +155,7 @@
       "unknownError": "Unknown error during loading",
       "failedToDelete": "Deletion failed.",
       "unknownDeleteError": "Unknown error during deletion."
-    }
-  },
-  "ButtonDownloadFile": {
-    "downloadFile": "Download file",
-    "downloadDisabled": "Download link is missing"
-  },
-  "NewProfileCreateView": {
-    "title": "Create New Profile",
-    "promptLabel": "Prompt Text:",
-    "promptPlaceholder": "Enter any additional instructions for the AI.",
-    "uploadButtonText": "Upload Files (Resume/CV)",
-    "clearAllButton": "Clear All",
-    "createProfileButton": "Create Profile",
-    "sending": "Creating...",
-    "defaultPrompt": "Create candidate profile based on the provided documents.",
-    "errors": {
-      "selectFileAlert": "Please select at least one file.",
-      "failedToCreateProfile": "Failed to create profile.",
-      "idMissingAlert": "Profile created, but ID is missing from the response.",
-      "unknownUploadError": "Unknown error during file upload.",
-      "uploadErrorPrefix": "An error occurred"
-    }
+    },
+    "downloadCV": "Download file"
   }
 }

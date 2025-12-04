@@ -106,6 +106,7 @@ const NewProfileCreateView = () => {
     const [isSending, setIsSending] = useState(false);
     const [selectedPosition, setSelectedPosition] = useState<PositionItem | null>(null);
     const [hasPositions, setHasPositions] = useState(true);
+    const [isWebSearchEnabled, setIsWebSearchEnabled] = useState(false); 
 
     const tp = (key: string) => String(t(`NewProfileCreateView.${key}`));
 
@@ -147,15 +148,19 @@ const NewProfileCreateView = () => {
         const formData = new FormData();
         
         formData.append('prompt', promptText || tp('defaultPrompt'));
-        
         formData.append('position_id', selectedPosition.id);
         
         selectedFiles.forEach((file) => {
           formData.append('files', file); 
         });
 
+        let apiUrl = '/api/v1/ai/generate';
+        if (isWebSearchEnabled) {
+          apiUrl += '?websearch=true';
+        }
+
         try {
-          const response = await fetch('/api/v1/ai/generate', { 
+          const response = await fetch(apiUrl, { 
             method: 'POST',
             body: formData,
           });
@@ -206,9 +211,22 @@ const NewProfileCreateView = () => {
               onChange={(e) => setPromptText(e.target.value)}
               rows={3}
               placeholder={tp('promptPlaceholder')}
-              style={{ ...styles.textarea, ...(isSending ? styles.disabledButton : {}) }}
               disabled={isSending}
           />
+      </div>
+
+      <div style={{ ...styles.formGroup, display: 'flex', alignItems: 'center' }}>
+          <input
+              type="checkbox"
+              id="websearch-toggle"
+              checked={isWebSearchEnabled}
+              onChange={(e) => setIsWebSearchEnabled(e.target.checked)}
+              disabled={isSending}
+              style={{ marginRight: '10px' }}
+          />
+          <label htmlFor="websearch-toggle" style={{ fontWeight: 'normal', margin: 0 }}>
+              {tp('websearchToggleLabel')}
+          </label>
       </div>
 
       <div style={styles.formGroup}>
