@@ -1,6 +1,7 @@
 {
   "HomePage": {
-    "hz": "Iudicium — оцінка, що бачить глибше.",
+    "logo": "Iudicium",
+    "slogan": "Бачити приховане. Обирати надійних.",
     "guide-button-text": "Інструкція з роботи з Iudicium",
     "analyze-button-text": "Проаналізувати резюме",
     "mini-descrioption": "Iudicium — інструмент для аналізу резюме, який вивчає відкриті джерела для надання глибокої оцінки кандидатів.",
@@ -15,18 +16,18 @@
     "new-profile-button-text": "Новий профіль"
   },
   "NewPositionCreateView": {
-    "title": "Створення нової позиції",
+    "title": "Створення нової посади",
     "basicInfo": "Основна інформація",
-    "positionName": "Назва позиції*",
+    "positionName": "Назва посади*",
     "characters": "символів",
     "parameters": "Параметри",
     "addParameter": "+ Додати параметр",
-    "noParameters": "Поки немає параметрів. Натисніть кнопку вище, щоб додати.",
-    "createPosition": "Створити позицію",
+    "noParameters": "Поки параметрів немає. Натисніть кнопку вище, щоб додати.",
+    "createPosition": "Створити посаду",
     "cancel": "Скасувати",
     "debugJson": "Поточний JSON (налагодження)",
     "errors": {
-      "nameRequired": "Назва позиції обов'язкова",
+      "nameRequired": "Назва посади обов'язкова",
       "nameMaxLength": "Максимум 100 символів",
       "atLeastOneParameter": "Додайте хоча б один параметр",
       "titleRequired": "Назва обов'язкова",
@@ -49,22 +50,27 @@
     "errorPrefix": "Помилка",
     "notFound": "Дані позиції не знайдені.",
     "parametersTitle": "Параметри Оцінювання",
-    "noParameters": "Для цієї позиції не визначено жодних параметрів оцінювання.",
+    "noParameters": "Для цієї посади не визначено жодних параметрів оцінювання.",
     "weight": "Вага",
     "noDescription": "Опис відсутній.",
     "debugJson": "Сирі дані JSON (для дебагу)",
-    "deleteButton": "Видалити Позицію",
+    "deleteButton": "Видалити Посаду",
     "deleting": "Видалення...",
-    "confirmDeletePosition": "Ви впевнені, що хочете видалити позицію \"{name}\"? Цю дію не можна буде скасувати.",
-    "deletePositionSuccess": "Позицію \"{name}\" успішно видалено.",
+    "confirmDeletePosition": "Ви впевнені, що хочете видалити посаду \"{name}\"? Цю дію не можна буде скасувати.",
+    "deletePositionSuccess": "Посаду \"{name}\" успішно видалено.",
     "errors": {
       "failedToLoad": "Невдала спроба завантаження",
       "unknownError": "Невідома помилка під час завантаження",
-      "failedToDeletePosition": "Невдале видалення позиції.",
+      "failedToDeletePosition": "Невдале видалення посади.",
       "unknownDeleteError": "Невідома помилка під час видалення."
     }
   },
   "ProfileView": {
+    "position": "Позиція оцінювання",
+    "positionError": "Помилка завантаження назви посади",
+    "positionNotFound": "Назву посади не знайдено у списку",
+    "positionNotAssigned": "Посада не призначена",
+    "positionUnknown": "Невідома посада",
     "loading": "Завантаження профілю...",
     "errorPrefix": "Помилка",
     "notFound": "Дані профілю не знайдені.",
@@ -81,7 +87,7 @@
     "certifications": "Сертифікати",
     "analysisTitle": "Оцінка та Аналіз",
     "keyIndicators": "Ключові показники",
-    "relevanceTitle": "Релевантність до Позиції",
+    "relevanceTitle": "Релевантність до Посади",
     "riskTitle": "Аналіз ризиків",
     "deleteButton": "Видалити Профіль",
     "deleting": "Видалення...",
@@ -91,7 +97,9 @@
     "confirmDelete": "Ви впевнені, що хочете видалити профіль кандидата \"{name}\"? Цю дію не можна буде скасувати.",
     "deleteSuccess": "Профіль кандидата \"{name}\" успішно видалено.",
     "deleteErrorPrefix": "Помилка видалення профілю",
-
+    "exportButton": "Експорт профілю",
+    "exportAs": "Експортувати як",
+    
     "labels": {
       "trust": "Trust Score",
       "integrity": "Integrity Score",
@@ -117,10 +125,32 @@
       "unknownError": "Невідома помилка під час завантаження",
       "failedToDelete": "Невдале видалення.",
       "unknownDeleteError": "Невідома помилка під час видалення."
-    }
+    },
+    "downloadCV": "Завантажити файл"
   },
   "ButtonDownloadFile": {
     "downloadFile": "Завантажити файл",
     "downloadDisabled": "Посилання для завантаження відсутнє"
+  },
+  "NewProfileCreateView": {
+    "title": "Створення Нового Профілю",
+    "promptLabel": "Текст запиту (Prompt):",
+    "promptPlaceholder": "Введіть будь-які додаткові інструкції для AI (наприклад: 'Зверніть увагу на досвід роботи з Python').",
+    "websearchToggleLabel": "Увімкнути пошук в Інтернеті (для актуалізації даних)",
+    "uploadButtonText": "Завантажити Файли (Резюме/CV)",
+    "clearAllButton": "Очистити все",
+    "createProfileButton": "Створити Профіль",
+    "sending": "Створення...",
+    "defaultPrompt": "Створити профіль кандидата на основі наданих документів.",
+    "createNewPositionButton": "Створити Нову Позицію",
+    "selectedPosition": "Вибрана позиція",
+    "errors": {
+      "selectFileAlert": "Будь ласка, виберіть хоча б один файл.",
+      "selectPositionAlert": "Будь ласка, виберіть позицію.",
+      "failedToCreateProfile": "Не вдалося створити профіль.",
+      "idMissingAlert": "Профіль створено, але ID відсутній у відповіді.",
+      "unknownUploadError": "Невідома помилка під час завантаження файлів.",
+      "uploadErrorPrefix": "Сталася помилка"
+    }
   }
 }
